@@ -38,20 +38,24 @@ jobs:
           curl -OL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
           sudo mv jq-linux64 /usr/local/bin/jq
       - run: |
-          set -ex
+          echo "launching chromium..."
           CHROMIUM_PORT=9222
           chromium-browser --remote-debugging-port=$CHROMIUM_PORT --headless --ignore-certificate-errors &
           CHROMIUM_PID=$!
 
+          echo "waiting for chromium..."
           sleep 1 # wait for chromium to be able to respond to the remote debugging port
+          echo "chromium ready."
 
+          echo "setting debugger connection..."
           WS_DEBUGGER=$(curl -sg http://127.0.0.1:$CHROMIUM_PORT/json/new | jq -rc '.webSocketDebuggerUrl')
 
           mkfifo ws
           tail -f ws | websocat -B 50000000 -t $WS_DEBUGGER > output.jsonl &
+          sleep 0.1
+          echo "debugger connection ready."
 
-          sleep 1
-
+          set -ex
           echo '{"id":1,"method":"Profiler.enable"}' > ws
           echo '{"id":2,"method":"Runtime.enable"}' > ws
           echo '{"id":3,"method":"Profiler.startPreciseCoverage","params":{"callCount":true,"detailed":true,"allowTriggeredUpdates":false}}' > ws
@@ -63,13 +67,13 @@ jobs:
           kill $CHROMIUM_PID
           rm ws
 
-          jq '.' output.jsonl
+          cat output.jsonl | jq
 
           cat output.jsonl \
             | jq -r '.result | select(.result).result' \
             | jq -c '. | map(. | select(.url | contains(".js")))' \
             > coverage.json
-          jq '.' coverage.json
+          cat coverage.json | jq
       - uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: docs
