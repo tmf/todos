@@ -32,9 +32,11 @@ jobs:
           nginx:latest
       - run: |
           sudo apt-get update
-          sudo apt-get install -y -q jq curl chromium-browser
+          sudo apt-get install -y -q curl chromium-browser
           curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
+          curl -OL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+          mv jq-linux64 /usr/local/bin/jq
       - run: |
           set -ex
           CHROMIUM_PORT=9222
@@ -67,7 +69,7 @@ jobs:
             | jq -r '.result | select(.result).result' \
             | jq -c '. | map(. | select(.url | contains(".js")))' \
             > coverage.json
-          cat coverage.json | jq
+          jq '.' coverage.json
       - uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: docs
