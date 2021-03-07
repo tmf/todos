@@ -1,0 +1,50 @@
+<meta charset="utf-8" />
+
+<pre>OfflineCache</pre>
+
+<!-- Setup test environment -->
+<script>
+	window.assert = window.assert || console.assert;
+	window.loaded = window.loaded || [];
+</script>
+
+<!-- Import implementation -->
+<script src="offline-cache.js"></script>
+
+<!-- Scenario 1: create instance -->
+<script>
+	let instance1 = null;
+	instance1 = new OfflineCache();
+</script>
+
+<!-- Assertions -->
+<script>
+	assert(instance1 != null, { message: "instance exists" });
+</script>
+
+<!-- Scenario 2: install event -->
+<script>
+	let cache2 = {
+		async addAll(items) {
+			this.items = items;
+		}
+	};
+	let cacheStorage2 = { 
+		async open() {
+			return cache2
+		}
+	};
+	let urls2 = ['/test', '/offline'];
+	let instance2 = new OfflineCache({ urls: urls2, cacheStorage: cacheStorage2 });
+
+	let result2 = instance2.install();
+
+	loaded.push(result2);
+</script>
+
+<!-- Assertions -->
+<script>
+	Promise.allSettled(loaded).then(() => {
+		assert(cache2.items.length === urls2.length, { message: "install event added all urls"  });
+	});
+</script>

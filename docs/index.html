@@ -149,6 +149,13 @@
 			<a href="https://github.com/tmf/todos">Source code on Github</a>
 		</p>
 	</footer>
+
+	<script type="module">
+		if ("serviceWorker" in navigator)
+			window.addEventListener("load", () => {
+				navigator.serviceWorker.register("/todos/serviceworker.js");
+			});
+	</script>
 </body>
 
 </html>
