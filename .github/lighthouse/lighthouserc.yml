@@ -1,0 +1,7 @@
+ci:
+  collect:
+    numberOfRuns: 3
+    settings:
+      chromeFlags: '--ignore-certificate-errors'
+  assert:
+    preset: 'lighthouse:recommended'

@@ -1,0 +1,78 @@
+name: Lighthouse
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  lighthouse:
+    name: Generate report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          openssl req -x509 -out .github/nginx/conf.d/localhost.crt -keyout .github/nginx/conf.d/localhost.key \
+            -newkey rsa:2048 -nodes -sha256 \
+            -subj '/CN=localhost' -extensions EXT -config <( \
+            printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+          sudo cp .github/nginx/conf.d/localhost.crt /usr/local/share/ca-certificates/localhost.crt
+          sudo update-ca-certificates
+      - run: |
+          docker run \
+          -d \
+          -p 80:80 \
+          -p 443:443 \
+          --name nginx \
+          -v ${{ github.workspace }}/docs:/usr/share/nginx/html/todos \
+          -v ${{ github.workspace }}/.github/nginx/conf.d:/etc/nginx/conf.d \
+          nginx:latest
+      - uses: treosh/lighthouse-ci-action@v3
+        id: lighthouse
+        continue-on-error: true
+        with:
+          configPath: '.github/lighthouse/lighthouserc.yml'
+          urls: |
+            https://localhost/todos/
+      - uses: actions/upload-artifact@v2
+        with:
+          name: lighthouse-report
+          path: ${{steps.lighthouse.outputs.resultsPath}}
+      - run: |
+          docker stop nginx
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const manifest = JSON.parse('${{steps.lighthouse.outputs.manifest}}');
+            const scores = manifest.map(manifest => manifest.summary);
+            const score = scores.reduce((average, summary) =>  {
+                average.performance += summary.performance / scores.length;
+                average.accessibility += summary.accessibility / scores.length;
+                average['best-practices'] += summary['best-practices'] / scores.length;
+                average.seo += summary.seo / scores.length;
+                average.pwa += summary.pwa / scores.length;
+                return average;
+            }, { performance: 0, accessibility: 0, 'best-practices': 0, seo: 0, pwa: 0});
+            const shield = (alt, label, score) => {
+              const url = 'https://img.shields.io/badge';
+              const percent = score * 100;
+              let color = 'brightgreen';
+              if(score < 0.5){
+                color = 'critical';
+              } else if (score < 0.9) {
+                color = 'yellow';
+              }
+              return `![${alt}](${url}/${label}-${percent.toFixed(0)}/100-${color}?logo=lighthouse)`;
+            }
+            
+            const message = `${shield('Performance', 'Performance', score.performance)}
+            ${shield('Accessibility', 'Accessibility', score.accessibility)}
+            ${shield('Best practices', 'Best%20practices', score['best-practices'])}
+            ${shield('SEO', 'SEO', score.seo)}
+            ${shield('PWA', 'PWA', score.pwa)}
+            `
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            })
+    
