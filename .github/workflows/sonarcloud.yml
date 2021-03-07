@@ -37,7 +37,7 @@ jobs:
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
 
           CHROMIUM_PORT=9222
-          chromium --remote-debugging-port=$CHROMIUM_PORT --headless &
+          chromium-browser --remote-debugging-port=$CHROMIUM_PORT --headless &
           CHROMIUM_PID=$!
 
           sleep 1 # wait for chromium to be able to respond to the remote debugging port
