@@ -18,7 +18,7 @@ jobs:
           projectBaseDir: docs
           args: >
             -Dsonar.organization=tmf
-            -Dsonar.projectKey=todos
+            -Dsonar.projectKey=tmf_todos
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
