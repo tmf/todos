@@ -36,7 +36,7 @@ jobs:
           curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
           curl -OL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-          mv jq-linux64 /usr/local/bin/jq
+          sudo mv jq-linux64 /usr/local/bin/jq
       - run: |
           set -ex
           CHROMIUM_PORT=9222
