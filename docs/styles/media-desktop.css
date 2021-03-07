@@ -1,0 +1,109 @@
+@media screen and (min-width: 640px) {
+	body {
+		grid-template-areas:
+			"sidebar main"
+			"sidebar footer";
+		grid-template-columns: 300px 1fr;
+		grid-template-rows: 1fr auto;
+	}
+
+	[role="main"] {
+		max-width: calc(min(100vw, 550px));
+		margin: 0 auto;
+		width: 95%;
+	}
+
+    [role="complementary"] {
+		display: block;
+		margin: 8px;
+        padding: 10px;
+		border-radius: 5px;
+		background-color: var(--color-light);
+		position: sticky;
+		top: 0px;
+	}
+
+	[role="complementary"] header h1,
+	[role="complementary"] header h2 {
+		margin: 10px 0;
+		font-weight: 500;
+		line-height: 1.2;
+		color: var(--color-dark);
+	}
+
+	[role="complementary"] header h1 {
+		font-size: 24px;
+	}
+
+	[role="complementary"] header h2 {
+		font-size: 14px;
+		margin-bottom: 0;
+	}
+
+	[role="complementary"] a {
+		font-weight: normal;
+		text-decoration: none;
+		color: var(--color-brand);
+	}
+
+	[role="complementary"] a:hover {
+		text-decoration: underline;
+		color: var(--color-foreground);
+	}
+
+	[role="complementary"] hr {
+		margin: 20px 0;
+		border: 0;
+		border-top: 1px dashed var(--color-separator-top);
+		border-bottom: 1px dashed var(--color-separator-bottom);
+	}
+
+	[role="complementary"] blockquote {
+		padding: 10px;
+		margin: 20px 0 60px 0;
+		border-radius: 5px;
+		background: var(--color-background);
+		position: relative;
+	}
+
+	[role="complementary"] blockquote:after {
+		content: "";
+		position: absolute;
+		top: 100%;
+		right: 30px;
+		border: 13px solid transparent;
+		border-top-color: var(--color-background);
+	}
+
+	[role="complementary"] blockquote p {
+		font-style: italic;
+		margin-top: 0;
+		margin-bottom: 0;
+		font-size: 15px;
+		line-height: 1.3;
+	}
+
+	[role="complementary"] blockquote p:before {
+		content: "“";
+		font-size: 2em;
+		position: absolute;
+		color: var(--color-brand);
+		top: -0.4em;
+		left: 3px;
+	}
+
+	[role="complementary"] blockquote p:after {
+		content: "”";
+		font-size: 2em;
+		position: absolute;
+		color: var(--color-brand);
+		bottom: -0.9em;
+		right: 3px;
+	}
+
+	[role="complementary"] blockquote footer {
+		position: absolute;
+		bottom: -40px;
+		right: 0px;
+	}
+}

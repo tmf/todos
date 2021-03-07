@@ -1,0 +1,23 @@
+{
+	"name": "todos",
+	"short_name": "todos",
+	"theme_color": "#af2f2f",
+	"background_color": "#f5f5f5",
+	"display": "minimal-ui",
+	"scope": "/todos/",
+	"start_url": "/todos/",
+	"icons": [
+		{
+			"src": "/images/android-chrome-192x192.png?v=1",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/images/favicon-512x512.png?v=1",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	]
+}

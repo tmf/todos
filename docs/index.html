@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>todos</title>
+	<meta name="description" content="todos" />
+	<meta name="application-name" content="todos" />
+
+	<meta name="referrer" content="no-referrer" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="theme-color" content="#bf4040" />
+
+	<link rel="manifest" href="site.webmanifest?v=1" />
+	<link rel="icon" sizes="16x16 32x32 48x48" href="images/favicon.ico?v=1" />
+	<link rel="icon" sizes="512x512" href="images/favicon-512x512.png?v=1" />
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png?v=1" />
+
+	<style>
+		:root {
+			--color-background: #f5f5f5;
+			--color-foreground: #4d4d4d;
+			--color-brand: #bf4040;
+			--color-light: #ffffffe6;
+			--color-dark: #000000;
+			--color-separator-top: #c5c5c5;
+			--color-separator-bottom: #f7f7f7;
+			--font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		}
+
+		html,
+		body {
+			margin: 0px;
+			padding: 0px;
+		}
+
+		html {
+			background: var(--color-background);
+			color: var(--color-foreground);
+			overscroll-behavior: none;
+		}
+
+		body {
+			font: 14px var(--font-family);
+			overflow-x: hidden;
+			min-height: 100vh;
+
+			display: grid;
+			grid-template-areas: "main"
+				"sidebar"
+				"footer";
+			grid-template-columns: auto;
+			grid-template-rows: 1fr auto;
+		}
+
+		.sr-only {
+			position: absolute;
+			left: -10000px;
+			top: auto;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+		}
+
+		[role="main"] {
+			grid-area: main;
+			display: flex;
+			flex-direction: column;
+			margin: 0 10px;
+		}
+
+		[role="contentinfo"] {
+			grid-area: footer;
+			text-align: center;
+		}
+
+		[role="complementary"] {
+			grid-area: sidebar;
+			display: none;
+		}
+
+		main header h1 {
+			color: var(--color-brand);
+			font-size: 100px;
+			font-weight: 100;
+			text-align: center;
+			text-rendering: optimizeLegibility;
+			hyphens: auto;
+			margin: 0;
+		}
+
+		a,
+		a:visited {
+			color: var(--color-brand);
+		}
+	</style>
+
+	<link rel="stylesheet" href="styles/media-desktop.css?v=1" media="screen and (min-width: 640px)" />
+</head>
+
+<body>
+	<a class="sr-only" href="#content">Skip to main content</a>
+
+	<aside role="complementary">
+		<header>
+			<h1>zero dependencies web application</h1>
+			<span>
+				<h2>custom elements with service worker</h2>
+				<a href="https://github.com/tmf/todos" target="_blank" rel="noopener">Github repository</a>
+			</span>
+		</header>
+		<hr />
+		<blockquote class="speech-bubble">
+			<p>
+				A <a href="http://todomvc.com" target="_blank" rel="noopener">todomv</a> inspired app built upon the capabilities of
+				the modern web platform, avoiding intermediate complexity where possible.
+			</p>
+		</blockquote>
+		<hr />
+		<blockquote class="speech-bubble">
+			<p>
+				No external code dependencies: the only requirements for developing this web application are a webserver,
+				a browser and a text editor.
+			</p>
+		</blockquote>
+		<hr />
+	</aside>
+
+	<main role="main" id="content">
+		<header>
+			<h1>todos</h1>
+		</header>
+
+		<todo-list>
+			<todo-item completed>html web app</todo-item>
+			<todo-item>workflows</todo-item>
+			<todo-item>test-unit custom element</todo-item>
+			<todo-item>test-suite custom element</todo-item>
+			<todo-item>todo-item custom element</todo-item>
+			<todo-item>todo-list custom element</todo-item>
+		</todo-list>
+	</main>
+
+	<footer role="contentinfo">
+		<p>
+			Created by <a href="https://github.com/tmf" rel="noopener">tmf</a>
+			|
+			<a href="https://github.com/tmf/todos">Source code on Github</a>
+		</p>
+	</footer>
+</body>
+
+</html>
