@@ -85,7 +85,7 @@ jobs:
           args: >
             -Dsonar.organization=tmf
             -Dsonar.projectKey=tmf_todos
-            -Dsonar.coverageReportPaths=reports/coverage.xml
+            -Dsonar.coverageReportPaths=/github/workspace/reports/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
