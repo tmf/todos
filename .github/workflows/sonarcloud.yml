@@ -74,6 +74,7 @@ jobs:
           cat report/coverage.json
       - run: |
           docker run \
+          -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
           -v ${{ github.workspace }}/report:/report \
           -v ${{ github.workspace }}/.github/test/report.js:/app/report.js \
           node /app/report.js /report/coverage.json /report/coverage.xml 172.17.0.1
