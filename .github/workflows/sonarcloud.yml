@@ -35,8 +35,12 @@ jobs:
           sudo apt-get install -y -q curl chromium-browser
           curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
+
+          which jq
           curl -OL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
-          sudo mv jq-linux64 /usr/local/bin/jq
+          sudo mv jq-linux64 /usr/bin/jq
+          which jq
+          jq --version
       - run: |
           echo "launching chromium..."
           CHROMIUM_PORT=9222
@@ -68,12 +72,14 @@ jobs:
           sleep 0.5 # wait for coverage to be transmitted
           kill $CHROMIUM_PID
           rm ws
-
+          
+          which jq
+          jq --version
           cat report/output.jsonl \
             | jq -r '.result | select(.result).result' \
             | jq -c '. | map(. | select(.url | contains(".js")))' \
             > report/coverage.json
-          cat report/coverage.json | jq
+          cat report/coverage.json | jq '.'
       - run: |
           docker run \
           -v ${{ github.workspace }}/report:/report \
