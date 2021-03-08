@@ -8,17 +8,86 @@ on:
 jobs:
   sonarcloud:
     name: SonarCloud
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - uses: actions/checkout@v2
+      - run: |
+          openssl req -x509 -out .github/nginx/conf.d/localhost.crt -keyout .github/nginx/conf.d/localhost.key \
+            -newkey rsa:2048 -nodes -sha256 \
+            -subj '/CN=localhost' -extensions EXT -config <( \
+            printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+          sudo cp .github/nginx/conf.d/localhost.crt /usr/local/share/ca-certificates/localhost.crt
+          sudo update-ca-certificates
+      - run: |
+          docker run \
+          -d \
+          -p 80:80 \
+          -p 443:443 \
+          --name nginx \
+          -v ${{ github.workspace }}/docs:/usr/share/nginx/html/todos \
+          -v ${{ github.workspace }}/.github/nginx/conf.d:/etc/nginx/conf.d \
+          nginx:latest
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y -q curl chromium-browser
+          curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
+          sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
+      - run: |
+          echo "launching chromium..."
+          CHROMIUM_PORT=9222
+          chromium-browser --remote-debugging-port=$CHROMIUM_PORT --headless --ignore-certificate-errors &
+          CHROMIUM_PID=$!
+
+          echo "waiting for chromium..."
+          sleep 2 # wait for chromium to be able to respond to the remote debugging port
+          echo "chromium ready."
+
+          echo "setting debugger connection..."
+          WS_DEBUGGER=$(curl -sg http://127.0.0.1:$CHROMIUM_PORT/json/new | jq -rc '.webSocketDebuggerUrl')
+
+          mkfifo ws
+          tail -f ws | websocat -B 50000000 -t $WS_DEBUGGER > output.jsonl &
+          sleep 0.1
+          echo "debugger connection ready."
+
+          set -ex
+          echo '{"id":1,"method":"Profiler.enable"}' > ws
+          echo '{"id":2,"method":"Runtime.enable"}' > ws
+          echo '{"id":3,"method":"Profiler.startPreciseCoverage","params":{"callCount":true,"detailed":true,"allowTriggeredUpdates":false}}' > ws
+          echo '{"id":4,"method":"Page.navigate","params":{"url":"https://localhost/todos/classes/offline-cache.html"}}' > ws
+          sleep 1 # wait for page navigation to complete and all tests to be executed
+          echo '{"id":5,"method":"Profiler.takePreciseCoverage"}' > ws
+
+          sleep 0.5 # wait for coverage to be transmitted
+          kill $CHROMIUM_PID
+          rm ws
+          
+          mkdir -p reports
+          cat output.jsonl \
+            | jq -r '.result | select(.result).result' \
+            | jq -r '. | map(. | select(.url | contains(".js")))' \
+            > reports/coverage.json
+          cat reports/coverage.json
+      - run: |
+          docker run \
+          -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
+          -v ${{ github.workspace }}/reports:/reports \
+          -v ${{ github.workspace }}/.github/test/report.js:/app/report.js \
+          node /app/report.js /reports/coverage.json /reports/coverage.xml 172.17.0.1
+      - run: |
+          cat reports/coverage.xml
       - uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: docs
           args: >
             -Dsonar.organization=tmf
             -Dsonar.projectKey=tmf_todos
+            -Dsonar.coverageReportPaths=/github/workspace/reports/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - run: |
+          docker stop nginx
