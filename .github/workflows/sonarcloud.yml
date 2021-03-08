@@ -75,9 +75,11 @@ jobs:
       - run: |
           docker run \
           -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-          -v ${{ github.workspace }}/report:/report \
+          -v ${{ github.workspace }}/reports:/reports \
           -v ${{ github.workspace }}/.github/test/report.js:/app/report.js \
-          node /app/report.js /report/coverage.json /report/coverage.xml 172.17.0.1
+          node /app/report.js /reports/coverage.json /reports/coverage.xml 172.17.0.1
+      - run: |
+          cat reports/coverage.xml
       - uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: docs
