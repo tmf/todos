@@ -65,6 +65,7 @@ jobs:
           kill $CHROMIUM_PID
           rm ws
           
+          mkdir -p reports
           cat output.jsonl \
             | jq -r '.result | select(.result).result' \
             | jq -r '. | map(. | select(.url | contains(".js")))' \
