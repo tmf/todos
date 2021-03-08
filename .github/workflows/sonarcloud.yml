@@ -42,12 +42,7 @@ jobs:
           CHROMIUM_PID=$!
 
           echo "waiting for chromium..."
-          # wait for chromium to be able to respond to the remote debugging port
-          ATTEMPTS=0
-          while [ $(curl -m 0.3 -o -I -L -s -w "%{http_code}" http://localhost:9222/json) != 200 ] && [ ATTEMPTS < 10 ]; do
-            sleep 0.3
-            let ATTEMPTS++
-          done
+          sleep 2 # wait for chromium to be able to respond to the remote debugging port
           echo "chromium ready."
 
           echo "setting debugger connection..."
