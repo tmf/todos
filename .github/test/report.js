@@ -14,7 +14,7 @@ const fetch = async url => new Promise(resolve => get(url, response => {
     const coverage = JSON.parse(new TextDecoder().decode(content))
 
     const files = await Promise.all(coverage.map(async entry => {
-        let result = `<file path="${entry.url.replace("https://localhost/todos", "docs")}">`
+        let result = `<file path="${entry.url.replace("https://localhost/todos/", "")}">`
         const content = await fetch(entry.url.replace("localhost", host))
         const whichLine = offset => content.substring(0, offset).split("\n").length;
         
