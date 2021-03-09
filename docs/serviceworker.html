@@ -1,0 +1,120 @@
+<meta charset="utf-8" />
+<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
+<pre>serviceworker</pre>
+
+<!-- Setup test environment -->
+<script>
+    window.assert = window.assert || console.assert;
+    window.loaded = window.loaded || [];
+</script>
+
+<!-- Setup service worker environment -->
+<script>
+    var checks = {
+        offlineCacheImported: 0,
+        offlineCacheInstalled: 0,
+        offlineCacheActivated: 0,
+        skippedWaiting: 0,
+        clientsClaimed: 0,
+        eventListenersAdded: [],
+        fetchedUrls: [],
+    };
+    var importScripts = function (source) {
+        if (source === "./classes/offline-cache.js") {
+            window.OfflineCache = class {
+                async install() {
+                    checks.offlineCacheInstalled++;
+                }
+                async activate() {
+                    checks.offlineCacheActivated++;
+                }
+                async fetch(event) {
+                    checks.fetchedUrls.push(event)
+                }
+            }
+            checks.offlineCacheImported++;
+        }
+    }
+
+    var self = {
+        addEventListener(event, callback) {
+            checks.eventListenersAdded.push({ event, callback });
+        },
+        skipWaiting() {
+            checks.skippedWaiting++;
+        },
+        clients: {
+            claim() {
+                checks.clientsClaimed++;
+            }
+        }
+    }
+</script>
+
+<!-- Import implementation -->
+<script src="serviceworker.js"></script>
+
+<!-- Assertions -->
+<script>
+    assert(checks.offlineCacheImported, { message: "imported offline cache implementation" });
+    assert(checks.eventListenersAdded.find(({ event }) => event === "install"), { message: "registered install callback" });
+    assert(checks.eventListenersAdded.find(({ event }) => event === "activate"), { message: "registered activate callback" });
+    assert(checks.eventListenersAdded.find(({ event }) => event === "fetch"), { message: "registered fetch callback" });
+</script>
+
+<!-- Scenario 1: installation -->
+<script>
+    var install = checks.eventListenersAdded.find(({ event }) => event === "install").callback;
+    install({
+        waitUntil(promise) {
+            loaded.push(promise);
+        }
+    })
+</script>
+
+<!-- Scenario 1: assertions -->
+<script>
+    Promise.allSettled(loaded).then(([installed]) => {
+        assert(checks.offlineCacheInstalled, { message: "installed offline cache implementation" });
+        assert(checks.skippedWaiting, { message: "completed installation" });
+    });
+</script>
+
+<!-- Scenario 2: activation -->
+<script>
+    var activate = checks.eventListenersAdded.find(({ event }) => event === "activate").callback;
+    activate({
+        waitUntil(promise) {
+            loaded.push(promise);
+        }
+    })
+</script>
+
+<!-- Scenario 2: assertions -->
+<script>
+    Promise.allSettled(loaded).then(() => {
+        assert(checks.offlineCacheActivated, { message: "activated offline cache implementation" });
+        assert(checks.clientsClaimed, { message: "completed activation" });
+    });
+</script>
+
+<!-- Scenario 3: fetch -->
+<script>
+    var fetch = checks.eventListenersAdded.find(({ event }) => event === "fetch").callback;
+    var request3 = 'https://localhost/todos'
+    fetch({
+        respondWith(promise) {
+            loaded.push(promise);
+        },
+        request: request3,
+    })
+</script>
+
+<!-- Scenario 3: fetch -->
+<script>
+    Promise.allSettled(loaded).then((values) => {
+        assert(checks.fetchedUrls.length, { message: "called fetch from offline cache implementation" })
+        assert(checks.fetchedUrls.find(({ request }) => request === request3), { message: "fetched url from offline cache implementation" });
+    });
+</script>
