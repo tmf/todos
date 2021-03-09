@@ -78,7 +78,6 @@ class OfflineCache {
 	 */
 	async fetch(event) {
 		const cache = await this.cacheStorage.open(this.cacheName);
-		
 		if (cache) {
 			const match = await cache.match(event.request);
 			if (match) {
