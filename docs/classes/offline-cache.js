@@ -7,7 +7,7 @@ class OfflineCache {
 	/**
 	 * Instance constructor
 	 *
-	 * @param {Object} options 
+	 * @param {Object} options
 	 * @param {Array} options.urls an array of URLs to pre-cache during the install phase
 	 * @param {String} options.name the name for the OfflineCachem, used as a prefix for the cacheName
 	 * @param {String|Number} options.version a version identifier for the cache, used as a suffix for the cacheName
