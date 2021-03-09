@@ -56,7 +56,9 @@ class OfflineCache {
 	 */
 	async install() {
 		const cache = await this.cacheStorage.open(this.cacheName);
-		if (cache) return cache.addAll(this.urls);
+		if (cache) {
+			await cache.addAll(this.urls);
+		}
 	}
 
 	/**
@@ -76,6 +78,13 @@ class OfflineCache {
 	 */
 	async fetch(event) {
 		const cache = await this.cacheStorage.open(this.cacheName);
-		if (cache) return cache.match(event.request);
+		
+		if (cache) {
+			const match = await cache.match(event.request);
+			if (match) {
+				return match;
+			}
+		}
+		return fetch(event.request);
 	}
 }
