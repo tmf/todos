@@ -75,3 +75,71 @@
 		assert(JSON.stringify(cacheStorage3.deleted) === JSON.stringify(['offline-41', 'offlinecache']), { message: "activate event removed caches prefixed with the same name"  });
 	});
 </script>
+
+<!-- Scenario 4: fetch event with existing cache items -->
+<script>
+	let html4 = '<html>4</html>';
+	let cache4 = {
+		items: {
+			'https://localhost/todos/': html4,
+		},
+		async match(url) {
+			return this.items[url];
+		}
+	};
+	let cacheStorage4 = { 
+		async open() {
+			return cache4;
+		}
+	};
+	
+	let instance4 = new OfflineCache({ cacheStorage: cacheStorage4 });
+
+	let result4 = instance4.fetch({ request: 'https://localhost/todos/' });
+
+	loaded.push(result4);
+</script>
+
+<!-- Scenario 4: assertions -->
+<script>
+	Promise.allSettled(loaded).then(async () => {
+		assert(await result4 === html4, { message: "fetch event returned cache storage items"  });
+	});
+</script>
+
+
+<!-- Scenario 5: fetch event with missing cache items -->
+<script>
+	let cache5 = {
+		async match(url) {
+			return undefined;
+		}
+	};
+	let cacheStorage5 = { 
+		async open() {
+			return cache5;
+		}
+	};
+	let instance5 = new OfflineCache({ cacheStorage: cacheStorage5 });
+
+	let html5 = '<html>5</html>';
+	let fetchMock5 = {
+		urls: [],
+		async fetch(url) {
+			fetchMock5.urls.push(url);
+			return html5;
+		}
+	}
+	let request5 = 'https://localhost/todos/';
+	let result5 = instance5.fetch({ request: request5 }, fetchMock5.fetch);
+
+	loaded.push(result5);
+</script>
+
+<!-- Scenario 5: assertions -->
+<script>
+	Promise.allSettled(loaded).then(async () => {
+		assert(await result5 === html5, { message: "fetch event returned upstream fetch results"  });
+		assert(await fetchMock5.urls.indexOf(request5) !== -1, { message: "unmatched callback was correctly called"  });
+	});
+</script>
