@@ -1,4 +1,5 @@
 <meta charset="utf-8" />
+<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
 
 <pre>OfflineCache</pre>
 
@@ -17,7 +18,7 @@
 	instance1 = new OfflineCache();
 </script>
 
-<!-- Assertions -->
+<!-- Scenario 1: assertions -->
 <script>
 	assert(instance1 != null, { message: "instance exists" });
 </script>
@@ -25,13 +26,14 @@
 <!-- Scenario 2: install event -->
 <script>
 	let cache2 = {
+		items: [],
 		async addAll(items) {
 			this.items = items;
 		}
 	};
 	let cacheStorage2 = { 
 		async open() {
-			return cache2
+			return cache2;
 		}
 	};
 	let urls2 = ['/test', '/offline'];
@@ -42,9 +44,102 @@
 	loaded.push(result2);
 </script>
 
-<!-- Assertions -->
+<!-- Scenario 2: assertions -->
 <script>
 	Promise.allSettled(loaded).then(() => {
 		assert(cache2.items.length === urls2.length, { message: "install event added all urls"  });
+	});
+</script>
+
+<!-- Scenario 3: activate event -->
+<script>
+	let cacheStorage3 = { 
+		deleted: [],
+		async delete(cache) {
+			this.deleted.push(cache);
+		},
+		async keys() {
+			return ['offline-41', 'offline-42', 'offlinecache'];
+		}
+	};
+	let instance3 = new OfflineCache({ version: 42, cacheStorage: cacheStorage3 });
+
+	let result3 = instance3.activate();
+
+	loaded.push(result3);
+</script>
+
+<!-- Scenario 3: assertions -->
+<script>
+	Promise.allSettled(loaded).then(() => {
+		assert(JSON.stringify(cacheStorage3.deleted) === JSON.stringify(['offline-41', 'offlinecache']), { message: "activate event removed caches prefixed with the same name"  });
+	});
+</script>
+
+<!-- Scenario 4: fetch event with existing cache items -->
+<script>
+	let html4 = '<html>4</html>';
+	let cache4 = {
+		items: {
+			'https://localhost/todos/': html4,
+		},
+		async match(url) {
+			return this.items[url];
+		}
+	};
+	let cacheStorage4 = { 
+		async open() {
+			return cache4;
+		}
+	};
+	
+	let instance4 = new OfflineCache({ cacheStorage: cacheStorage4 });
+
+	let result4 = instance4.fetch({ request: 'https://localhost/todos/' });
+
+	loaded.push(result4);
+</script>
+
+<!-- Scenario 4: assertions -->
+<script>
+	Promise.allSettled(loaded).then(async () => {
+		assert(await result4 === html4, { message: "fetch event returned cache storage items"  });
+	});
+</script>
+
+
+<!-- Scenario 5: fetch event with missing cache items -->
+<script>
+	let cache5 = {
+		async match(url) {
+			return undefined;
+		}
+	};
+	let cacheStorage5 = { 
+		async open() {
+			return cache5;
+		}
+	};
+	let instance5 = new OfflineCache({ cacheStorage: cacheStorage5 });
+
+	let html5 = '<html>5</html>';
+	let fetchMock5 = {
+		urls: [],
+		async fetch(url) {
+			fetchMock5.urls.push(url);
+			return html5;
+		}
+	}
+	let request5 = 'https://localhost/todos/';
+	let result5 = instance5.fetch({ request: request5 }, fetchMock5.fetch);
+
+	loaded.push(result5);
+</script>
+
+<!-- Scenario 5: assertions -->
+<script>
+	Promise.allSettled(loaded).then(async () => {
+		assert(await result5 === html5, { message: "fetch event returned upstream fetch results"  });
+		assert(await fetchMock5.urls.indexOf(request5) !== -1, { message: "unmatched callback was correctly called"  });
 	});
 </script>

@@ -67,16 +67,16 @@ class OfflineCache {
 	 * https://developer.mozilla.org/docs/Web/API/FetchEvent
 	 *
 	 * @param {FetchEvent} event
+ 	 * @param {Function} unmatched is called when no match is found in the cache with: unmatched(event.request)
+	 * @throws will throw if no match is found in the cache and unmatched is not defined
 	 * @return void|Promise
 	 * @example
 	 * const cache = new OfflineCache({ urls: ['/'] });
 	 * self.addEventListener("fetch", (event) =>
-	 * 	event.respondWith(
-	 * 		cache.fetch(event).then((response) => response || fetch(event.request))
-	 * 	)
+	 * 	event.respondWith(cache.fetch(event, fetch))
 	 * );
 	 */
-	async fetch(event) {
+	async fetch(event, unmatched) {
 		const cache = await this.cacheStorage.open(this.cacheName);
 		if (cache) {
 			const match = await cache.match(event.request);
@@ -84,6 +84,9 @@ class OfflineCache {
 				return match;
 			}
 		}
-		return fetch(event.request);
+		if (unmatched) {
+			return unmatched(event.request);
+		}
+		throw new Error('fetch error');
 	}
 }

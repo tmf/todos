@@ -59,6 +59,8 @@ jobs:
           echo '{"id":3,"method":"Profiler.startPreciseCoverage","params":{"callCount":true,"detailed":true,"allowTriggeredUpdates":false}}' > ws
           echo '{"id":4,"method":"Page.navigate","params":{"url":"https://localhost/todos/classes/offline-cache.html"}}' > ws
           sleep 1 # wait for page navigation to complete and all tests to be executed
+          echo '{"id":4,"method":"Page.navigate","params":{"url":"https://localhost/todos/serviceworker.html"}}' > ws
+          sleep 1 # wait for page navigation to complete and all tests to be executed
           echo '{"id":5,"method":"Profiler.takePreciseCoverage"}' > ws
 
           sleep 0.5 # wait for coverage to be transmitted
