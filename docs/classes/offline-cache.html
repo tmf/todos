@@ -18,7 +18,7 @@
 	instance1 = new OfflineCache();
 </script>
 
-<!-- Assertions -->
+<!-- Scenario 1: assertions -->
 <script>
 	assert(instance1 != null, { message: "instance exists" });
 </script>
@@ -26,13 +26,14 @@
 <!-- Scenario 2: install event -->
 <script>
 	let cache2 = {
+		items: [],
 		async addAll(items) {
 			this.items = items;
 		}
 	};
 	let cacheStorage2 = { 
 		async open() {
-			return cache2
+			return cache2;
 		}
 	};
 	let urls2 = ['/test', '/offline'];
@@ -43,7 +44,7 @@
 	loaded.push(result2);
 </script>
 
-<!-- Assertions -->
+<!-- Scenario 2: assertions -->
 <script>
 	Promise.allSettled(loaded).then(() => {
 		assert(cache2.items.length === urls2.length, { message: "install event added all urls"  });
