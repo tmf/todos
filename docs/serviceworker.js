@@ -20,5 +20,5 @@ self.addEventListener("install", (event) =>
 	event.waitUntil(cache.install().then(() => self.skipWaiting()))
 );
 self.addEventListener("fetch", (event) =>
-	event.respondWith(cache.fetch(event)))
+	event.respondWith(cache.fetch(event))
 );
