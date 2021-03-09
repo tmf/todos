@@ -1,5 +1,7 @@
 # Todos
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tmf_todos&metric=alert_status&token=f75248b8a964fcccde991ddc628a90100f059766)](https://sonarcloud.io/dashboard?id=tmf_todos)
+
 A dependency-free todo application built with the modern capabilities of the web platform, avoiding intermediate complexity where possible. 
 
 ## Features
