@@ -50,7 +50,7 @@ jobs:
 
           mkfifo ws
           tail -f ws | websocat -B 50000000 -t $WS_DEBUGGER > output.jsonl &
-          sleep 0.1
+          sleep 0.5
           echo "debugger connection ready."
 
           set -ex
@@ -67,29 +67,27 @@ jobs:
           kill $CHROMIUM_PID
           rm ws
           
-          mkdir -p reports
+          mkdir -p docs/reports
           cat output.jsonl \
             | jq -r '.result | select(.result).result' \
             | jq -r '. | map(. | select(.url | contains(".js")))' \
-            > reports/coverage.json
-          cat reports/coverage.json
+            > docs/reports/coverage.json
       - run: |
           docker run \
           -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
-          -v ${{ github.workspace }}/reports:/reports \
+          -v ${{ github.workspace }}/docs/reports:/reports \
           -v ${{ github.workspace }}/.github/test/report.js:/app/report.js \
           node /app/report.js /reports/coverage.json /reports/coverage.xml 172.17.0.1
       - run: |
-          cat reports/coverage.xml
+          docker stop nginx
       - uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: docs
           args: >
             -Dsonar.organization=tmf
             -Dsonar.projectKey=tmf_todos
-            -Dsonar.coverageReportPaths=/github/workspace/reports/coverage.xml
+            -Dsonar.coverageReportPaths=reports/coverage.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - run: |
-          docker stop nginx
+
