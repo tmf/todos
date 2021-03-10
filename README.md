@@ -42,7 +42,7 @@ This project follows a zero-dependency policy, as such there are only three requ
 
 Locally, there are many ways of running a web server, here are 2 ways with:
 
-<details><summary>OSX built-in Apache `httpd`</summary>
+<details><summary>OSX built-in Apache httpd</summary>
 
 1. Create certificate with:
     ```sh
@@ -85,13 +85,13 @@ Locally, there are many ways of running a web server, here are 2 ways with:
     sudo /usr/sbin/apachectl restart
     ```
 </details>
-<details><summary>`nginx` with Docker</summary>
+<details><summary>nginx with Docker</summary>
 
 Requirements:
 - [Docker](https://www.docker.com/products/docker-desktop)
 - SSL setup:
 
-    <details><summary>[`mkcert`](https://github.com/FiloSottile/mkcert) setup</summary>
+    <details><summary>mkcert setup</summary>
 
     In order to access the web server via `https://` without warnings we can generate a locally trusted self-signed certificate with [`mkcert`](https://github.com/FiloSottile/mkcert):
 
@@ -102,7 +102,7 @@ Requirements:
 
     </details>
 
-    <details><summary>`openssl` setup</summary>
+    <details><summary>openssl setup</summary>
 
     1. Create certificate authority
         
