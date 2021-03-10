@@ -7,19 +7,42 @@ A dependency-free todo application built with the modern capabilities of the web
 ## Features
 
 - 📦 No external code dependencies
+- ✅ Unit tests
 - 🌈 Progressive web application
 - 🤖 Automated workflows
 - ⚡️ Lighthouse score 100/100
 
-
 ## Requirements
 
-- Web server: Apache httpd, nginx, GH Pages, S3, ...
-- Browser: [Firefox](https://mozilla.org/firefox/all/#product-desktop-developer), [Chrome](https://google.com/chrome/), [Safari](https://developer.apple.com/safari/download/), [Edge](https://microsoft.com/edge) 
+This project follows a zero-dependency policy, as such there are only three requirements:
 
-## Web server
+- Web server: [Apache HTTP Server](https://httpd.apache.org), [nginx](https://nginx.org), [Github Pages](https://pages.github.com), [Cloudflare Pages](https://pages.cloudflare.com), ...
+- Browser: [Firefox](https://mozilla.org/firefox/all#product-desktop-developer), [Chrome](https://google.com/chrome), [Safari](https://developer.apple.com/safari/download), [Edge](https://microsoft.com/edge), ...
+- Text editor: [Visual Studio Code](https://code.visualstudio.com), [Notepad++](https://notepad-plus-plus.org), [vim](https://www.vim.org/), ...
 
-<details><summary>OSX built-in Apache</summary>
+## Get started
+
+1. Get the source code
+1. Deploy web server
+1. Browse to web application
+
+### Get the source code
+- By `git`:
+    ```sh
+    git clone https://github.com/tmf/todos.git
+    ```
+
+- By `zip`:
+    Download [`main.zip`](https://github.com/tmf/todos/archive/main.zip) and unzip it:
+    ```sh
+    unzip main.zip todos
+    ```
+
+### Deploy web server
+
+Locally, there are many ways of running a web server, here are 2 ways with:
+
+<details><summary>OSX built-in Apache `httpd`</summary>
 
 1. Create certificate with:
     ```sh
@@ -57,21 +80,20 @@ A dependency-free todo application built with the modern capabilities of the web
     </VirtualHost
     ```
 
-1. Restart the webserver with the new configuration
+1. Restart the web server with the new configuration
     ```sh
-    sudo /usr/sbin/apachectl restart # reload apache virtual hosts
+    sudo /usr/sbin/apachectl restart
     ```
 </details>
-<details><summary>nginx with Docker</summary>
+<details><summary>`nginx` with Docker</summary>
 
 Requirements:
 - [Docker](https://www.docker.com/products/docker-desktop)
 - SSL setup:
 
-    <details><summary>mkcert setup</summary>
-    - [mkcert](https://github.com/FiloSottile/mkcert)
+    <details><summary>[`mkcert`](https://github.com/FiloSottile/mkcert) setup</summary>
 
-    In order to access the web server via `https://` without warnings we can generate a locally trusted self-signed certificate with `mkcert`:
+    In order to access the web server via `https://` without warnings we can generate a locally trusted self-signed certificate with [`mkcert`](https://github.com/FiloSottile/mkcert):
 
     ```sh
     mkcert localhost # generate localhost.pem + localhost-key.pem
@@ -80,7 +102,7 @@ Requirements:
 
     </details>
 
-    <details><summary>openssl setup</summary>
+    <details><summary>`openssl` setup</summary>
 
     1. Create certificate authority
         
@@ -179,23 +201,27 @@ docker run \
 	nginx:latest
 ```
 
-- > By giving the container a name, it becomes easier to identify the container with `docker ps`.
-- > The `--rm` flag is used to not aggregate docker containers locally: otherwise stopped containers have to be cleaned up with `docker rm`.
-- > As the docker engine runs with elevated privileges we can directly open port `80`, bypassing the need for prompting super-user privileges with `sudo` for ports lower than `1024`.
-- > The volume mount of the `docs` directory in the `nginx` default site root allows live-editing the source files without restarting the container.
-- > The `docs` folder is just for using GH Pages from a repository folder, otherwise it would be named `public` or `src`...
+- By giving the container a name, it becomes easier to identify the container with `docker ps`.
+- The `--rm` flag is used to not aggregate docker containers locally: otherwise stopped containers have to be cleaned up with `docker rm`.
+- As the docker engine runs with elevated privileges we can directly open port `80`, bypassing the need for prompting super-user privileges with `sudo` for ports lower than `1024`.
+- The volume mount of the `docs` directory in the `nginx` default site root allows live-editing the source files without restarting the container.
+- The `docs` folder is just for using GH Pages from a repository folder, otherwise it would be named `public` or `src`...
 </details>
 
-<details><summary>GH Pages</summary>
+This project is hosted by Github Pages on https://tmf.github.io/todos. 
+
+<details><summary>Github Pages</summary>
 
 `/docs` folder as source: [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source)
 
 </details>
-<details><summary>S3</summary>
+<details><summary>Cloudflare Pages</summary>
 
-[AWS Toolkit for Visual Studio Code](https://aws.amazon.com/visualstudiocode/)
+[Build fast sites](https://pages.cloudflare.com/)
 
 </details>
+
+### Browse to web application
 
 Navigate to the web server with a browser:
 
