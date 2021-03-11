@@ -208,11 +208,19 @@ docker run \
 - The `docs` folder is just for using GH Pages from a repository folder, otherwise it would be named `public` or `src`...
 </details>
 
-This project is hosted by Github Pages on https://tmf.github.io/todos. 
+ There are many free possibilities (within certain limits) to host static web sites:
 
 <details><summary>Github Pages</summary>
 
+Requirements:
+- public repository
+- or Pro Github account for private repositories
+
 `/docs` folder as source: [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#choosing-a-publishing-source)
+
+This project is hosted by Github Pages on https://tmf.github.io/todos:
+
+![](https://user-images.githubusercontent.com/1573003/110827388-4fc5cb00-8296-11eb-9b91-3a9e27b74d44.png)
 
 </details>
 <details><summary>Cloudflare Pages</summary>
