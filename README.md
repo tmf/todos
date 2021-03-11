@@ -28,15 +28,15 @@ This project follows a zero-dependency policy, as such there are only three requ
 
 ### Get the source code
 - By `git`:
-    ```sh
-    git clone https://github.com/tmf/todos.git
-    ```
+	```sh
+	git clone https://github.com/tmf/todos.git
+	```
 
 - By `zip`:
-    Download [`main.zip`](https://github.com/tmf/todos/archive/main.zip) and unzip it:
-    ```sh
-    unzip main.zip todos
-    ```
+	Download [`main.zip`](https://github.com/tmf/todos/archive/main.zip) and unzip it:
+	```sh
+	unzip main.zip todos
+	```
 
 ### Deploy web server
 
@@ -45,45 +45,45 @@ Locally, there are many ways of running a web server, here are 2 ways with:
 <details><summary>OSX built-in Apache httpd</summary>
 
 1. Create certificate with:
-    ```sh
-    sudo ssh-keygen -f server.key
-    sudo openssl req -new -key server.key -out request.csr
-    sudo openssl x509 -req -in request.csr -signkey server.key -out server.crt
-    ```
+	```sh
+	sudo ssh-keygen -f server.key
+	sudo openssl req -new -key server.key -out request.csr
+	sudo openssl x509 -req -in request.csr -signkey server.key -out server.crt
+	```
 
 1. Add the following to `/private/etc/apache2/other/.conf`:
-    ```
-    Listen 443
-    LoadModule ssl_module libexec/apache2/mod_ssl.so
-    SSLCertificateFile "/Users/you/Sites/todos/server.crt"
-    SSLCertificateKeyFile "/Users/you/Sites/todos/server.key"
-    <VirtualHost 127.0.0.1:80>
-        ServerName localhost
-        DocumentRoot "/Users/you/Sites/todos/docs"
-        <Directory "/Users/you/Sites/todos/docs">
-            Order allow,deny
-            Allow from all
-        </Directory>
-    </VirtualHost>
-    
-    <VirtualHost 127.0.0.1:443>
-        ServerName localhost
-        DocumentRoot "/Users/you/Sites/todos/docs"
-        SSLEngine on
-        SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
-        SSLCertificateFile /Users/you/Sites/todos/server.crt
-        SSLCertificateKeyFile /Users/you/Sites/todos/server.key
-        <Directory "/Users/you/Sites/todos/docs">
-            Order allow,deny
-            Allow from all
-        </Directory>
-    </VirtualHost
-    ```
+	```
+	Listen 443
+	LoadModule ssl_module libexec/apache2/mod_ssl.so
+	SSLCertificateFile "/Users/you/Sites/todos/server.crt"
+	SSLCertificateKeyFile "/Users/you/Sites/todos/server.key"
+	<VirtualHost 127.0.0.1:80>
+		ServerName localhost
+		DocumentRoot "/Users/you/Sites/todos/docs"
+		<Directory "/Users/you/Sites/todos/docs">
+				Order allow,deny
+				Allow from all
+		</Directory>
+	</VirtualHost>
+	
+	<VirtualHost 127.0.0.1:443>
+		ServerName localhost
+		DocumentRoot "/Users/you/Sites/todos/docs"
+		SSLEngine on
+		SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+		SSLCertificateFile /Users/you/Sites/todos/server.crt
+		SSLCertificateKeyFile /Users/you/Sites/todos/server.key
+		<Directory "/Users/you/Sites/todos/docs">
+				Order allow,deny
+				Allow from all
+		</Directory>
+	</VirtualHost
+	```
 
 1. Restart the web server with the new configuration
-    ```sh
-    sudo /usr/sbin/apachectl restart
-    ```
+	```sh
+	sudo /usr/sbin/apachectl restart
+	```
 </details>
 <details><summary>nginx with Docker</summary>
 
@@ -91,100 +91,100 @@ Requirements:
 - [Docker](https://www.docker.com/products/docker-desktop)
 - SSL setup:
 
-    <details><summary>mkcert setup</summary>
+	<details><summary>mkcert setup</summary>
 
-    In order to access the web server via `https://` without warnings we can generate a locally trusted self-signed certificate with [`mkcert`](https://github.com/FiloSottile/mkcert):
+	In order to access the web server via `https://` without warnings we can generate a locally trusted self-signed certificate with [`mkcert`](https://github.com/FiloSottile/mkcert):
 
-    ```sh
-    mkcert localhost # generate localhost.pem + localhost-key.pem
-    mkcert -install # install local mkcert certificate authority
-    ```
+	```sh
+	mkcert localhost # generate localhost.pem + localhost-key.pem
+	mkcert -install # install local mkcert certificate authority
+	```
 
-    </details>
+	</details>
 
-    <details><summary>openssl setup</summary>
+	<details><summary>openssl setup</summary>
 
-    1. Create certificate authority
-        
-        ```sh
-        sudo openssl genrsa \
-            -out /etc/ssl/private/localhostCA.key \
-            2048
-        sudo openssl req \
-            -new \
-            -x509 \
-            -sha256 \
-            -days 365 \
-            -nodes \
-            -key /etc/ssl/private/localhostCA.key \
-            -out /etc/ssl/certs/localhostCA.pem
-        ```
+	1. Create certificate authority
+		
+		```sh
+		sudo openssl genrsa \
+			-out /etc/ssl/private/localhostCA.key \
+			2048
+		sudo openssl req \
+			-new \
+			-x509 \
+			-sha256 \
+			-days 365 \
+			-nodes \
+			-key /etc/ssl/private/localhostCA.key \
+			-out /etc/ssl/certs/localhostCA.pem
+		```
 
-    1. Install certificate authority locally
-        - Firefox:
-            Preferences -> Privacy & Security -> Certificates -> View Certificates -> Authorities -> Import
-        - Chrome:
-            Settings -> Advanced -> Privacy and security -> Manage certificates -> Authorities -> Import
+	1. Install certificate authority locally
+		- Firefox:
+			Preferences -> Privacy & Security -> Certificates -> View Certificates -> Authorities -> Import
+		- Chrome:
+			Settings -> Advanced -> Privacy and security -> Manage certificates -> Authorities -> Import
 
-    1. Create CSF configuration:
-        
-        `localhost.cnf`:
-        ```conf
-        [req]
-        default_bits = 2048
-        distinguished_name = req_distinguished_name
-        prompt = no
+	1. Create CSF configuration:
+		
+		`localhost.cnf`:
+		```conf
+		[req]
+		default_bits = 2048
+		distinguished_name = req_distinguished_name
+		prompt = no
 
-        [req_distinguished_name]
-        C = CH
-        ST = Zurich
-        L = Zurich
-        O = localhost
-        CN = localhost
+		[req_distinguished_name]
+		C = CH
+		ST = Zurich
+		L = Zurich
+		O = localhost
+		CN = localhost
 
-        [v3_ca]
-        subjectAltName = @alt_names
+		[v3_ca]
+		subjectAltName = @alt_names
 
-        [alt_names]
-        DNS.1 = localhost
-        ```
+		[alt_names]
+		DNS.1 = localhost
+		```
 
-    1. Create CSR
+	1. Create CSR
 
-        ```sh
-        openssl req \
-            -new \
-            -config localhost.cnf \
-            -sha256 \
-            -nodes \
-            -newkey rsa:2048 \
-            -keyout localhost-key.pem \
-            -out localhost.csr
-        ```
+		```sh
+		openssl req \
+			-new \
+			-config localhost.cnf \
+			-sha256 \
+			-nodes \
+			-newkey rsa:2048 \
+			-keyout localhost-key.pem \
+			-out localhost.csr
+		```
 
-    1. Create certificate
+	1. Create certificate
 
-        ```sh
-        sudo openssl x509 \
-            -req \
-            -in localhost.csr \
-            -CA /etc/ssl/certs/localhostCA.pem \
-            -CAkey /etc/ssl/private/localhostCA.key \
-            -CAcreateserial \
-            -out localhost.pem \
-            -sha256 \
-            -days 3650 \
-            -extfile localhost.cnf \
-            -extensions v3_ca
-        ```
+		```sh
+		sudo openssl x509 \
+			-req \
+			-in localhost.csr \
+			-CA /etc/ssl/certs/localhostCA.pem \
+			-CAkey /etc/ssl/private/localhostCA.key \
+			-CAcreateserial \
+			-out localhost.pem \
+			-sha256 \
+			-days 3650 \
+			-extfile localhost.cnf \
+			-extensions v3_ca
+		```
 
-    1. Clean up files
+	1. Clean up files
 
-        ```sh
-        rm localhost.cnf localhost.csr
-        ```
+		```sh
+		rm localhost.cnf localhost.csr
+		```
 
-    </details>
+	</details>
 
 The `docs` directory can be served by any web server, such as `nginx`:
 
