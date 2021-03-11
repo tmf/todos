@@ -2,7 +2,9 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tmf_todos&metric=alert_status&token=f75248b8a964fcccde991ddc628a90100f059766)](https://sonarcloud.io/dashboard?id=tmf_todos)
 
-A dependency-free todo application built with the modern capabilities of the web platform, avoiding intermediate complexity where possible. 
+A dependency-free todo application built with the modern capabilities of the web platform, avoiding intermediate complexity where possible.
+
+This is a [todomvc.com](https://todomvc.com)-inspired example application that demonstrates a more sustainable way to create web applications, without external code dependencies.
 
 ## Features
 
@@ -14,11 +16,17 @@ A dependency-free todo application built with the modern capabilities of the web
 
 ## Requirements
 
-This project follows a zero-dependency policy, as such there are only three requirements:
+This project tries to adhere to a zero-dependency policy, as such, for basic operation and development, there are only three requirements:
 
 - Web server: [Apache HTTP Server](https://httpd.apache.org), [nginx](https://nginx.org), [Github Pages](https://pages.github.com), [Cloudflare Pages](https://pages.cloudflare.com), ...
 - Browser: [Firefox](https://mozilla.org/firefox/all#product-desktop-developer), [Chrome](https://google.com/chrome), [Safari](https://developer.apple.com/safari/download), [Edge](https://microsoft.com/edge), ...
 - Text editor: [Visual Studio Code](https://code.visualstudio.com), [Notepad++](https://notepad-plus-plus.org), [vim](https://www.vim.org/), ...
+
+For automated workflows, there are 2 additional requirements:
+- [Github](https://github.com) repository: with [Github actions](https://github.com/features/actions), we check for performance metrics with a [Lighthouse workflow](https://github.com/marketplace/actions/lighthouse-ci-action)
+- [SonarCloud](https://sonarcloud.io) project: also integrates with [Github actions](https://github.com/marketplace/actions/sonarcloud-scan) to check for quality metrics
+
+Unit tests can also be run manually, by opening them in the browser.
 
 ## Get started
 
@@ -51,7 +59,7 @@ Locally, there are many ways of running a web server, here are 2 ways with:
 	sudo openssl x509 -req -in request.csr -signkey server.key -out server.crt
 	```
 
-1. Add the following to `/private/etc/apache2/other/.conf`:
+1. Add the following to `/private/etc/apache2/other/.conf`, by replacing all `/Users/you/Sites/todos` path prefixes with the absolute path to the `todos` repository :
 	```
 	Listen 443
 	LoadModule ssl_module libexec/apache2/mod_ssl.so
