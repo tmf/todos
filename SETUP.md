@@ -42,6 +42,8 @@ mkcert -install # install local mkcert certificate authority
 
 ## Certificate with openssl
 
+If you don't have a certificate authority already, you need to create it once by:
+
 1. Create certificate authority
 	
 	```sh
@@ -64,7 +66,9 @@ mkcert -install # install local mkcert certificate authority
 	- Chrome:
 		Settings -> Advanced -> Privacy and security -> Manage certificates -> Authorities -> Import
 
-1. Create CSF configuration:
+The certificate can then be created with a Certificate Signing Request (CSR):
+
+1. Create CSR configuration:
 	
 	`localhost.cnf`:
 	```conf
@@ -111,7 +115,7 @@ mkcert -install # install local mkcert certificate authority
 		-CAcreateserial \
 		-out localhost.pem \
 		-sha256 \
-		-days 3650 \
+		-days 365 \
 		-extfile localhost.cnf \
 		-extensions v3_ca
 	```
@@ -151,7 +155,7 @@ mkcert -install # install local mkcert certificate authority
 
 1. Generate `localhost.pem` and `localhost-key.pem` with either [Certificate with mkcert](#certificate-with-mkcert) or [Certificate with openssl](#certificate-with-openssl)
 
-1. The `docs` directory can be served by any web server, such as `nginx`:
+1. The `docs` directory can be served with `nginx` via this `docker` command:
 
 	```sh
 	docker run \
@@ -170,7 +174,8 @@ mkcert -install # install local mkcert certificate authority
 	- The `--rm` flag is used to not aggregate docker containers locally: otherwise stopped containers have to be cleaned up with `docker rm`.
 	- As the docker engine runs with elevated privileges we can directly open port `80`, bypassing the need for prompting super-user privileges with `sudo` for ports lower than `1024`.
 	- The volume mount of the `docs` directory in the `nginx` default site root allows live-editing the source files without restarting the container.
-	- The `docs` folder is just for using GH Pages from a repository folder, otherwise it would be named `public` or `src`...
+	- server configuration is in [`.github/nginx/conf.d/default.conf`](.github/nginx/conf.d/default.conf)
+	- The `docs` folder is just for using Github Pages from a repository folder, otherwise it would be named `public` or `src`...
 
 ## Github Pages
 

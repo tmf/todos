@@ -20,12 +20,12 @@ This [TodoMVC](https://github.com/tastejs/todomvc) inspired example application 
 
 ## Requirements
 
-There are no external code dependencies, but there are 2 minimal requirements for running this application:
+There are no external code dependencies, the only requirements for running this application are:
 
-- HTTPS Web server: [Apache HTTP Server](https://httpd.apache.org), [nginx](https://nginx.org), [Github Pages](https://pages.github.com), [Cloudflare Pages](https://pages.cloudflare.com), ...
-- Browser: [Firefox](https://mozilla.org/firefox/all#product-desktop-developer), [Chrome](https://google.com/chrome), [Safari](https://developer.apple.com/safari/download), [Edge](https://microsoft.com/edge), ...
+- a HTTPS web server: [Apache HTTP Server](https://httpd.apache.org), [nginx](https://nginx.org), [Github Pages](https://pages.github.com), [Cloudflare Pages](https://pages.cloudflare.com), ...
+- a browser: [Firefox](https://mozilla.org/firefox/all#product-desktop-developer), [Chrome](https://google.com/chrome), [Safari](https://developer.apple.com/safari/download), [Edge](https://microsoft.com/edge), ...
 
-See [Setup](SETUP.md) for instructions.
+See [Get started locally](SETUP.md#get-started-locally) for instructions.
 
 ## Example
 Here is a simple example HTML snippet to show a `<todo-list>` element:
