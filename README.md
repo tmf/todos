@@ -40,6 +40,7 @@ Here is a simple example HTML snippet to show a `<todo-list>` element:
 
 ## Documentation
 
+- [Specification](spec/)
 - [Setup](SETUP.md)
 - Web Application
 	- [HTML](docs/)
