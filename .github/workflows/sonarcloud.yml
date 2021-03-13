@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/checkout@v2
       - run: |
           openssl req -x509 -out .github/nginx/conf.d/localhost.crt -keyout .github/nginx/conf.d/localhost.key \
             -newkey rsa:2048 -nodes -sha256 \
