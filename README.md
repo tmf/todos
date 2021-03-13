@@ -42,8 +42,8 @@ Here is a simple example HTML snippet to show a `<todo-list>` element:
 
 - [Specification](spec/)
 - [Setup](SETUP.md)
-- Web Application
-	- [HTML](docs/)
+- [Web Application](docs/)
+	- [HTML](docs/index.md)
 	- [Service Worker](docs/serviceworker.md)
 	- [Styles](docs/styles)
 	- [Classes](docs/classes)
