@@ -1,13 +1,18 @@
 # Setup
 
+- [Get started locally](#get-started-locally)
 - [Source code](#source-code)
 - [Certificate with mkcert](#certificate-with-mkcert)
 - [Certificate with openssl](#certificate-with-openssl)
-- [Apache](#osx-apache)
-- [nginx](#nginx-with-docker)
+- [OSX Apache](#osx-apache)
+- [nginx with Docker](#nginx-with-docker)
 - [Github Pages](#github-pages)
-- [Chrome Debugger Protocol](#chrome-debugger-protocol)
-- [SonarCloud](#sonarcloud)
+
+## Get started locally
+1. Get the [Source code](#source-code)
+1. Create `localhost.pem` and `localhost-key.pem` either with [Certificate with mkcert](#certificate-with-mkcert) or [Certificate with openssl](#certificate-with-openssl)
+1. Start web server either with [OSX Apache](#osx-apache) or [nginx with Docker](#nginx-with-docker)
+1. Open [https://localhost/todos](https://locahost/todos)
 
 ## Source code
 
@@ -178,12 +183,3 @@ Requirements:
 This project is hosted by Github Pages on https://tmf.github.io/todos:
 
 ![](https://user-images.githubusercontent.com/1573003/110827388-4fc5cb00-8296-11eb-9b91-3a9e27b74d44.png)
-
-## Chrome Debugger Protocol
-
-Install `websocat`, `curl`, and `jq`
-
-## SonarCloud
-
-[SonarCloud](https://sonarcloud.io) project: also integrates with [Github actions](https://github.com/marketplace/actions/sonarcloud-scan) to check for quality metrics
-
