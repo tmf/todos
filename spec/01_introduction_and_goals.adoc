@@ -1,6 +1,10 @@
 [[section-introduction-and-goals]]
 == Introduction and Goals
 
+The web platform has caught up enough over the years with features that made certain essential libraries obsolete: jQuery, momentjs, react-i18n, and now, with custom elements supported in all major browsers, could even component libraries, like React no longer be necessary? This project aims to show that modern UI components can be done without component abstractions provided by libraries.
+
+Although the Javascript package repository `npmjs` is a very popular and active ecosystem, it also comes with hidden costs: every bit of time gained by using an abstraction needs to be paid back eventually by maintenance costs, such as security vulnerabilities, breaking changes and obsolescence. This investment risk are lowered with short-term projects, or with certain more stable libraries, however it also can get compounded by the fact that the packages are highly dependent on each other and that `npmjs` packages rarely get back-ported to older versions, forcing the consumer to follow living on the edge.
+
 [role="arc42help"]
 ****
 Describes the relevant requirements and the driving forces that software architects and development team must consider. These include
