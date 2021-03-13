@@ -128,10 +128,12 @@ mkcert -install # install local mkcert certificate authority
 	
 	<VirtualHost 127.0.0.1:443>
 		ServerName localhost
-		DocumentRoot "/Users/you/Sites/todos/docs"
 		SSLEngine on
 		SSLCertificateFile /Users/you/Sites/todos/localhost.pem
 		SSLCertificateKeyFile /Users/you/Sites/todos/localhost-key.pem
+		<Location "/todos">
+			Alias "/Users/you/Sites/todos/docs"
+		</Location>
 	</VirtualHost
 	```
 
