@@ -29,7 +29,7 @@ jobs:
           nginx:latest
       - run: |
           sudo apt-get update
-          sudo apt-get install -y -q jq curl chromium-browser
+          sudo apt-get install -y -q curl chromium-browser
           curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
       - run: |
