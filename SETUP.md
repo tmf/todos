@@ -120,28 +120,18 @@ mkcert -install # install local mkcert certificate authority
 	```
 	Listen 443
 	LoadModule ssl_module libexec/apache2/mod_ssl.so
-	SSLCertificateFile "/Users/you/Sites/todos/localhost.pem"
-	SSLCertificateKeyFile "/Users/you/Sites/todos/localhost-key.pem"
+
 	<VirtualHost 127.0.0.1:80>
 		ServerName localhost
-		DocumentRoot "/Users/you/Sites/todos/docs"
-		<Directory "/Users/you/Sites/todos/docs">
-				Order allow,deny
-				Allow from all
-		</Directory>
+		Redirect 307 / https://localhost
 	</VirtualHost>
 	
 	<VirtualHost 127.0.0.1:443>
 		ServerName localhost
 		DocumentRoot "/Users/you/Sites/todos/docs"
 		SSLEngine on
-		SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
 		SSLCertificateFile /Users/you/Sites/todos/localhost.pem
 		SSLCertificateKeyFile /Users/you/Sites/todos/localhost-key.pem
-		<Directory "/Users/you/Sites/todos/docs">
-				Order allow,deny
-				Allow from all
-		</Directory>
 	</VirtualHost
 	```
 
