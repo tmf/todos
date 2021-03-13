@@ -4,7 +4,7 @@
 
 **_A dependency-free todo application built with the modern capabilities of the web platform_**
 
-This [TodoMVC](@tastejs/todomvc) inspired example application demonstrates a more sustainable way to create web applications: _without external code dependencies_.
+This [TodoMVC](https://github.com/tastejs/todomvc) inspired example application demonstrates a more sustainable way to create web applications: _without external code dependencies_.
 
 ## Features
 
