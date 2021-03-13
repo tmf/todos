@@ -32,7 +32,7 @@ jobs:
           nginx:latest
       - run: |
           sudo apt-get update
-          sudo apt-get install -y -q curl chromium-browser
+          sudo apt-get install -y -q jq curl chromium-browser
           curl -OL https://github.com/vi/websocat/releases/download/v1.7.0/websocat_1.7.0_ssl1.1_amd64.deb
           sudo dpkg -i websocat_1.7.0_ssl1.1_amd64.deb
       - run: |
@@ -76,8 +76,8 @@ jobs:
           docker run \
           -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
           -v ${{ github.workspace }}/docs/reports:/reports \
-          -v ${{ github.workspace }}/.github/test/report.js:/app/report.js \
-          node /app/report.js /reports/coverage.json /reports/coverage.xml 172.17.0.1
+          -v ${{ github.workspace }}/.github/sonarcloud/transform-coverage.js:/app/transform-coverage.js \
+          node /app/transform-coverage.js /reports/coverage.json /reports/coverage.xml 172.17.0.1
       - run: |
           docker stop nginx
       - uses: SonarSource/sonarcloud-github-action@master
