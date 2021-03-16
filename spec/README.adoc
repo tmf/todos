@@ -23,6 +23,18 @@ Describes the relevant requirements and the driving forces that software archite
 
 === Requirements Overview
 
+[options="header",cols="0,1"]
+|===
+|Nr.|Description
+| R1 | No external code dependencies
+| R2 | Static web application
+| R3 | Offline support
+| R4 | Add and remove todos
+| R5 | Toggle todos
+| R6 | Filter todos by status
+| R7 | Edit todos
+|===
+
 [role="arc42help"]
 ****
 .Contents
@@ -42,6 +54,16 @@ Keep these excerpts as short as possible. Balance readability of this document w
 ****
 
 === Quality Goals
+
+[options="header",cols="0,1"]
+|===
+|Nr.|Description
+| Q1 | Compatible with > 95% of most used mobile browsers (2021) 
+| Q2 | WCAG 2.2 Level AAA
+| Q3 | Unit test coverage > 90%
+| Q4 | Compressed critical path resources < 130KB
+| Q5 | ASVS 4.0.2 with V1.1, V5, V9, V14
+|===
 
 [role="arc42help"]
 ****
@@ -78,11 +100,13 @@ These stakeholders determine the extent and the level of detail of your work and
 Table with role names, person names, and their expectations with respect to the architecture and its documentation.
 ****
 
-[options="header",cols="1,2,2"]
+[options="header",cols="1,2"]
 |===
-|Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
+|Role|Expectations
+| Users with entry-level mobile devices | Fast and affordable user experience
+| Users using assistive technology | Fast and affordabale user experience
+| Web developer | Be convinced of practicality and advantages of avoiding dependencies
+| Aspiring web developer | Learn practical basics with focus on standards
 |===
 
 [[section-architecture-constraints]]
