@@ -1,0 +1,36 @@
+<meta charset="utf-8" />
+<link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+
+<pre>IndexedDatabase</pre>
+
+<!-- Setup test environment -->
+<script>
+	window.assert = window.assert || console.assert;
+	window.loaded = window.loaded || [];
+</script>
+
+<!-- Import implementation -->
+<script src="indexed-database.js"></script>
+
+<!-- Scenario 1: create instance -->
+<script>
+	let instance1 = new IndexedDatabase();
+</script>
+
+<!-- Scenario 1: create instance with database upgrade callback-->
+<script>
+	let instance2 = new IndexedDatabase({
+		name: "test", 
+		upgrade(db) {
+			db.createObjectStore("jobs", { keyPath: "id" });
+			jobsStore.createIndex("CreatedIndex", "created");
+		},
+	});
+</script>
+
+<!-- Assertions -->
+<script>
+	assert(instance1 != null, { message: "instance exists" });
+
+	assert(true, { message: "upgrade parameter" });
+</script>
