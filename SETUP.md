@@ -12,7 +12,7 @@
 1. Get the [Source code](#source-code)
 1. Create `localhost.pem` and `localhost-key.pem` either with [Certificate with mkcert](#certificate-with-mkcert) or [Certificate with openssl](#certificate-with-openssl)
 1. Start web server either with [OSX Apache](#osx-apache) or [nginx with Docker](#nginx-with-docker)
-1. Open [https://localhost/todos](https://locahost/todos)
+1. Open [https://localhost/todos](https://localhost/todos)
 
 ## Source code
 
@@ -125,7 +125,7 @@ The certificate can then be created with a Certificate Signing Request (CSR):
 
 1. Generate `localhost.pem` and `localhost-key.pem` with either [Certificate with mkcert](#certificate-with-mkcert) or [Certificate with openssl](#certificate-with-openssl)
 
-1. Add the following to `/private/etc/apache2/other/.conf`, by replacing all `/Users/you/Sites/todos` path prefixes with the absolute path to the `todos` repository :
+1. Add the following to `/private/etc/apache2/other/.conf`, by replacing all `/Users/you/Sites/todos` path prefixes with the absolute path to the `todos` directory:
 	```
 	Listen 443
 	LoadModule ssl_module libexec/apache2/mod_ssl.so
