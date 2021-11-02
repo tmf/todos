@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8" />
 	<title>todos</title>
-	<meta name="description"
-		content="A dependency-free todo application built with the modern capabilities of the web platform" />
+	<meta
+		name="description"
+		content="A dependency-free todo application built with the modern capabilities of the web platform"
+	/>
 	<meta name="application-name" content="todos" />
 
 	<meta name="referrer" content="no-referrer" />
@@ -27,13 +28,7 @@
 			--color-dark: #000000;
 			--color-separator-top: #c5c5c5;
 			--color-separator-bottom: #f7f7f7;
-			--font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		}
-
-		html,
-		body {
-			margin: 0px;
-			padding: 0px;
+			--font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 		}
 
 		html {
@@ -48,7 +43,8 @@
 			min-height: 100vh;
 
 			display: grid;
-			grid-template-areas: "main"
+			grid-template-areas:
+				"main"
 				"sidebar"
 				"footer";
 			grid-template-columns: auto;
@@ -64,19 +60,19 @@
 			overflow: hidden;
 		}
 
-		[role="main"] {
+		main {
 			grid-area: main;
 			display: flex;
 			flex-direction: column;
 			margin: 0 10px;
 		}
 
-		[role="contentinfo"] {
+		footer {
 			grid-area: footer;
 			text-align: center;
 		}
 
-		[role="complementary"] {
+		aside {
 			grid-area: sidebar;
 			display: none;
 		}
@@ -91,8 +87,7 @@
 			margin: 0;
 		}
 
-		a,
-		a:visited {
+		a:any-link {
 			color: var(--color-brand);
 		}
 	</style>
@@ -104,7 +99,7 @@
 <body>
 	<a class="sr-only" href="#content">Skip to main content</a>
 
-	<aside role="complementary">
+	<aside>
 		<header>
 			<h1>zero dependencies web application</h1>
 			<span>
@@ -115,49 +110,53 @@
 		<hr />
 		<blockquote>
 			<p>
-				A <a href="https://todomvc.com" target="_blank" rel="noopener">todomv.com</a> inspired example
-				application built with the modern capabilities of the web platform, avoiding intermediate complexity
-				where possible.
+				A
+				<a href="https://todomvc.com" target="_blank" rel="noopener">todomv.com</a>
+				inspired example application built with the modern capabilities of the web platform, avoiding
+				intermediate complexity where possible.
 			</p>
-			<footer><a href="documentation/">Documentation</a></footer>
+			<footer>
+				<a href="https://github.com/tmf/todos#documentation">Documentation</a>
+			</footer>
 		</blockquote>
 		<hr />
 		<blockquote>
 			<p>
-				No external code dependencies: the only requirements for developing this web application are a
-				webserver, a browser and a text editor.
+				No external code dependencies: the only requirements for developing this web application are a webserver,
+				a browser and a text editor.
 			</p>
 		</blockquote>
 		<hr />
 		<blockquote>
-			<p>
-				Run tests in the browser
-			</p>
+			<p>Run tests in the browser</p>
 			<footer><a href="tests/">Tests</a></footer>
 		</blockquote>
 		<hr />
 	</aside>
 
-	<main role="main" id="content">
+	<main id="content">
 		<header>
 			<h1>todos</h1>
 		</header>
 
-		<todo-list>
-			<todo-item completed>html web app</todo-item>
-			<todo-item completed>workflows</todo-item>
-			<todo-item>test-unit custom element</todo-item>
-			<todo-item>test-suite custom element</todo-item>
-			<todo-item>todo-item custom element</todo-item>
-			<todo-item>todo-list custom element</todo-item>
-			<todo-item>write documentation</todo-item>
-			<todo-item>promote project</todo-item>
-		</todo-list>
+		<todo-app>
+			<todo-list>
+				<todo-item completed>html web app</todo-item>
+				<todo-item completed>workflows</todo-item>
+				<todo-item>test-unit custom element</todo-item>
+				<todo-item>test-suite custom element</todo-item>
+				<todo-item>todo-item custom element</todo-item>
+				<todo-item>todo-list custom element</todo-item>
+				<todo-item>write documentation</todo-item>
+				<todo-item>promote project</todo-item>
+			</todo-list>
+		</todo-app>
 	</main>
 
-	<footer role="contentinfo">
+	<footer>
 		<p>
-			Created by <a href="https://github.com/tmf" target="_blank" rel="noopener">tmf</a>
+			Created by
+			<a href="https://github.com/tmf" target="_blank" rel="noopener">tmf</a>
 			|
 			<a href="https://github.com/tmf/todos" target="_blank" rel="noopener">Source code on Github</a>
 		</p>
@@ -169,6 +168,9 @@
 				navigator.serviceWorker.register("./serviceworker.js");
 			});
 	</script>
-</body>
 
+	<script type="module" src="elements/todo-item/custom-element.js?v=1"></script>
+	<script type="module" src="elements/todo-list/custom-element.js?v=1"></script>
+	<script type="module" src="elements/todo-app/custom-element.js?v=1"></script>
+</body>
 </html>
