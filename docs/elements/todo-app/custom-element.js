@@ -11,7 +11,7 @@ template.innerHTML = `
 }
 
 ::slotted(todo-list) {
-	display: block;
+	display: initial;
 }
 
 input {
