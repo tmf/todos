@@ -14,8 +14,6 @@ This [TodoMVC](https://github.com/tastejs/todomvc) inspired example application 
 - 🤖 Automated workflows
 - 🎇 Lighthouse score 100/100
 - 🧩 Custom elements
-- 🔐 Content security policies
-- 📇 Indexed Databases
 
 ## Demo
 
@@ -52,14 +50,9 @@ Here is a simple example HTML snippet to show a `<todo-list>` element:
 	- [Styles](docs/styles)
 	- [Classes](docs/classes)
 		- [`OfflineCache`](docs/classes/offline-cache.md)
-		- [`IndexedDatabase`](docs/classes/indexed-database.md)
-		- [`Store`](docs/classes/store.md)
 	- [Custom Elements](docs/elements)
 		- [`<todos-list>`](docs/elements/todos-list)
 		- [`<todos-item>`](docs/elements/todos-item)
-	- [Tests](docs/tests)
-		- [`<test-unit>`](docs/tests/elements/test-unit)
-		- [`<test-suite>`](docs/tests/elements/test-suite)
 - [Workflows](.github/workflows)
 	- [Lighthouse](.github/workflows/lighthouse.md)
 	- [SonarCloud](.github/workflows/sonarcloud.md)
